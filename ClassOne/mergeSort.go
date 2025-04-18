@@ -1,23 +1,55 @@
 package classone
 
-func mergeSort(nums []int) {
-	if len(nums) <= 2 {
-		return
+import "fmt"
+
+func MergeSort(nums []int) []int {
+	if len(nums) == 2 {
+		if nums[0] > nums[1] {
+			nums[0], nums[1] = nums[1], nums[0]
+		}
+		return nums
+	}
+	if len(nums) < 2 {
+		return nums
 	}
 	mid := len(nums) / 2
 	left := nums[:mid]
 	right := nums[mid:]
-	mergeSort(left)
-	//結束切割後要做的邏輯：
-	//兩兩排序
-	//同樣的邏輯right也要做一遍
-	//這裡是同時存在left及right，是一起處理嗎?
-	//right還會進到下一個遞迴，只處理left
-	for i := 0; i < len(left); i++ {
-
+	sortLeft := MergeSort(left)
+	sortRight := MergeSort(right)
+	//最後一層會在if內排序好 5,2 -> 2,5  ; 4,6 -> 4,6
+	//l{2,5} merge r{4,6}
+	//want: 2,4,5,6
+	//2,4,5,6要傳到上一層 (5,2,4,6 -> 2,4,5,6)
+	want := make([]int, 0, len(nums))
+	for i, j := 0, 0; i < len(sortLeft) || j < len(sortRight); {
+		if j == len(sortRight) {
+			want = append(want, sortLeft[i:]...)
+			return want
+		}
+		if i == len(sortLeft) {
+			want = append(want, sortRight[j:]...)
+			return want
+		}
+		if sortLeft[i] > sortRight[j] {
+			want = append(want, sortRight[j])
+			j++
+		} else { //值相等時處理left
+			want = append(want, sortLeft[i])
+			i++
+		}
 	}
-	mergeSort(right)
+	fmt.Println(want)
+	return want
 }
+
+/*
+拆成三個步驟 ?
+sort
+merge
+mergeSort
+
+*/
 
 /*
 {
@@ -40,7 +72,7 @@ func mergeSort(nums []int) {
 			linked-list?
 			{
 			type ListNode struct {
-				Val int
+				Val iPrintln()
 				Next *ListNode
 			}
 			要先歷遍長度 for head != nil {lenght++}
@@ -84,9 +116,10 @@ func mergeSort(nums []int) {
 			right{
 			7,6
 			}
-			邏輯應該會跟處理left一樣
+	昨天想錯了
+	應該要在func(right) return後邏輯運算
+	修正後：mergeSort.jpg
 	}
+	sort後要merge
 }
-
-
 */
