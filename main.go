@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Println([]int{28, -6, -22, 8, 44, 17})
-	fmt.Println(classone.MergeSort([]int{28, -6, -22, 8, 44, 17}))
+	test := []int{28, -6, -22, 8, 44, 17}
+	fmt.Println(test)
+	test = classone.HeapSort(test)
+	fmt.Println("sorted : ", test)
 }
