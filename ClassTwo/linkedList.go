@@ -7,6 +7,19 @@ type ListNode struct {
 	Next *ListNode
 }
 
+func (l *ListNode) Del(target int) *ListNode {
+	curr := l
+	free := &ListNode{} //Go有GC，該Pointer沒有被利用就會釋放，free是C的用法(講師用的是C語言)
+	for curr != nil {
+		if curr.Next.Val == target {
+			free = curr.Next //保留這個Pointer
+			curr.Next = curr.Next.Next
+		}
+	}
+	free.Next = nil
+	return l
+}
+
 func deleteDuplicates(head *ListNode) *ListNode {
 	head_cur := &ListNode{Val: 0}
 	res := head_cur
