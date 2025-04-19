@@ -1,6 +1,6 @@
 //leetcode Q232 Implement Queue using Stacks
 
-package queue
+package classtwo
 
 type MyQueue struct {
 	inStack  []int //1,2
