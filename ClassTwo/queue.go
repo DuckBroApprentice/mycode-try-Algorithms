@@ -16,3 +16,17 @@ func (l *ListNode) Dequeue() {
 	//只實現delete
 	l.Next = l.Next.Next
 }
+
+func Josephus(n int) int {
+	//array[n]
+	//n個人殺到最後一人
+	var people []int
+	for i := 0; i < n; i++ {
+		people = append(people, i)
+	}
+	for i := 1; i < n; i++ {
+		people = append(people, people[0])
+		people = people[2:]
+	}
+	return people[0] + 1
+}

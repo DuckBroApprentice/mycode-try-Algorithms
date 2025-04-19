@@ -1,13 +1,12 @@
 package main
 
 import (
-	"Algorithms/classone"
+	classtwo "Algorithms/ClassTwo"
 	"fmt"
 )
 
 func main() {
-	test := []int{28, -6, -22, 8, 44, 17}
-	fmt.Println(test)
-	test = classone.HeapSort(test)
-	fmt.Println("sorted : ", test)
+	for i := 1; i <= 100; i++ {
+		fmt.Printf("input i: %d,alive i: %d\n", i, classtwo.Josephus(i))
+	}
 }
