@@ -7,6 +7,26 @@ type ListNode struct {
 	Next *ListNode
 }
 
+func (l *ListNode) Insert(target int, index int) *ListNode {
+	if index == 0 {
+		head := &ListNode{Val: target}
+		head.Next = l
+		return head
+	}
+	newNode := &ListNode{Val: target}
+	count := 0
+	for l != nil {
+		if count == index {
+			track := &ListNode{Val: 0}
+			track.Next = l.Next
+			l.Next = newNode
+			l = l.Next
+			l.Next = track.Next
+		}
+	}
+	return l
+}
+
 func (l *ListNode) Del(target int) *ListNode {
 	curr := l
 	free := &ListNode{} //Go有GC，該Pointer沒有被利用就會釋放，free是C的用法(講師用的是C語言)
