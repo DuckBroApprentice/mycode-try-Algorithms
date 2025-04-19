@@ -1,5 +1,5 @@
 // leetcode Q20:Valid Parentheses
-package classone
+package classtwo
 
 func isValid(s string) bool {
 	var stack []string
