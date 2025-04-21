@@ -23,11 +23,14 @@ import (
 //		fmt.Print(a)
 //	}
 func main() {
-	var test []string
-	test = []string{"5", "-", "4", "*", "3", "+", "2"} //expect 5 4 3 * - 2 +
-	test2 := []string{"6", "*", "7", "+", "1"}         //6 7 * 1 +
-	tree := classfour.ExpressionTree(test)
-	tree2 := classfour.ExpressionTree(test2)
-	fmt.Println(classfour.PostorderTraversal(tree))  //correct
-	fmt.Println(classfour.PostorderTraversal(tree2)) //correct
+	test := classfour.NewGraph(7)
+	test.AddEdge(2, 4)
+	test.AddEdge(7, 0)
+	test.AddEdge(7, 3)
+	test.AddEdge(6, 2)
+
+	fmt.Println("4,6 :", test.HasEdge(4, 6))
+	fmt.Println("7,0 :", test.HasEdge(7, 0))
+	fmt.Println("6,2 :", test.HasEdge(6, 2))
+	fmt.Println(test)
 }
