@@ -26,5 +26,5 @@ func main() {
 	var test []string
 	test = []string{"5", "-", "4", "*", "3", "+", "2"} //expect 5 4 3 * - 2 +
 	tree := classfour.ExpressionTree(test)
-	fmt.Println(classfour.PostorderTraversal(tree)) //+ * 4 3 2
+	fmt.Println(classfour.PostorderTraversal(tree)) //correct
 }
