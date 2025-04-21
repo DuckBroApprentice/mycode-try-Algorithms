@@ -73,7 +73,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func inorderTraversal(root *TreeNode) []int {
+func InorderTraversal(root *TreeNode) []int {
 	var res []int
 	var inorder func(node *TreeNode)
 	inorder = func(node *TreeNode) {
