@@ -1,5 +1,7 @@
 package parent
 
+import "fmt"
+
 //多了Parent才能方便做Update
 //leetcode沒試過
 type treeNode struct {
@@ -23,4 +25,42 @@ func (t *treeNode) Insert(val int) *treeNode {
 		return t.Left.Insert(val)
 	}
 	return t
+}
+
+func (t *treeNode) Search(x *treeNode) *treeNode {
+	if t == nil {
+		fmt.Println("node in not exists: ", x)
+		return nil
+	}
+	if t.Val == x.Val {
+		fmt.Println("node is exists: ", x)
+		return x
+	}
+	if x.Val > t.Val {
+		return t.Right.Search(x)
+	}
+	if x.Val < t.Val {
+		return t.Left.Search(x)
+	}
+	return x
+}
+
+//節點左邊的最大值  //Successor則是節點右邊的最小值 (懶的做...
+func (t *treeNode) Predecessor(x *treeNode) *treeNode { //這個val是樹的某個節點
+	if x.Left != nil {
+		return t.Search(x.Left)
+	}
+	if x.Left == nil {
+		for {
+			curr := x.Parent
+			if curr == nil {
+				return nil
+			}
+			if curr.Val < x.Val {
+				return curr
+			}
+			x = curr
+		}
+	}
+	return nil //x本身就是最小值
 }
