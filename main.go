@@ -23,14 +23,22 @@ import (
 //		fmt.Print(a)
 //	}
 func main() {
-	test := classfour.NewGraph(7)
-	test.AddEdge(2, 4)
-	test.AddEdge(7, 0)
-	test.AddEdge(7, 3)
-	test.AddEdge(6, 2)
+	var s1 struct{}
+	var s2 struct{}
+	var a1 [0]int
+	var a2 [0]int
+	n1 := &classfour.Node{}
+	n2 := &classfour.Node{}
+	for i := 0; i < 10; i++ {
+		n3 := &classfour.Node{}
+		fmt.Printf("Address of n3: %p\n", &n3)
+		//每次跑完for迴圈都會被丟掉
+	}
 
-	fmt.Println("4,6 :", test.HasEdge(4, 6))
-	fmt.Println("7,0 :", test.HasEdge(7, 0))
-	fmt.Println("6,2 :", test.HasEdge(6, 2))
-	fmt.Println(test)
+	fmt.Printf("Address of s1: %p\n", &s1)
+	fmt.Printf("Address of s2: %p\n", &s2)
+	fmt.Printf("Address of a1: %p\n", &a1)
+	fmt.Printf("Address of a2: %p\n", &a2)
+	fmt.Printf("Address of n1: %p\n", &n1)
+	fmt.Printf("Address of n2: %p\n", &n2)
 }
