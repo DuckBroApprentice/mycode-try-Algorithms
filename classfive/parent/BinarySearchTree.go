@@ -45,18 +45,18 @@ func (t *treeNode) Search(x *treeNode) *treeNode {
 	return x
 }
 
-func (t *treeNode) FindMax(tree *treeNode) (int, error) {
+func (t *treeNode) FindMax(tree *treeNode) (*treeNode, error) {
 	if t == nil {
-		return 0, fmt.Errorf("tree has no node")
+		return nil, fmt.Errorf("tree has no node")
 	}
 	for tree.Right != nil {
 		tree = tree.Right
 	}
-	return tree.Val, nil
+	return tree, nil
 }
 
 //節點左邊的最大值  //Successor則是節點右邊的最小值 (懶的做...
-func (t *treeNode) Predecessor(x *treeNode) *treeNode { //這個val是樹的某個節點
+func (t *treeNode) Predecessor(x *treeNode) (*treeNode, error) { //這個val是樹的某個節點
 	if x.Left != nil {
 		return t.FindMax(x.Left)
 	}
@@ -64,13 +64,13 @@ func (t *treeNode) Predecessor(x *treeNode) *treeNode { //這個val是樹的某�
 		for {
 			curr := x.Parent
 			if curr == nil {
-				return nil
+				return nil, fmt.Errorf("not exists")
 			}
 			if curr.Val < x.Val {
-				return curr
+				return curr, nil
 			}
 			x = curr
 		}
 	}
-	return nil //x本身就是最小值
+	return nil, fmt.Errorf("input is min") //x本身就是最小值
 }
