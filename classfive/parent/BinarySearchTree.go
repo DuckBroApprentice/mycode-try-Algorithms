@@ -45,10 +45,20 @@ func (t *treeNode) Search(x *treeNode) *treeNode {
 	return x
 }
 
+func (t *treeNode) FindMax(tree *treeNode) (int, error) {
+	if t == nil {
+		return 0, fmt.Errorf("tree has no node")
+	}
+	for tree.Right != nil {
+		tree = tree.Right
+	}
+	return tree.Val, nil
+}
+
 //節點左邊的最大值  //Successor則是節點右邊的最小值 (懶的做...
 func (t *treeNode) Predecessor(x *treeNode) *treeNode { //這個val是樹的某個節點
 	if x.Left != nil {
-		return t.Search(x.Left)
+		return t.FindMax(x.Left)
 	}
 	if x.Left == nil {
 		for {
