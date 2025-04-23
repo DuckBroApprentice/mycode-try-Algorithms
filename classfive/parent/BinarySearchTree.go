@@ -27,6 +27,84 @@ func (t *treeNode) Insert(val int) *treeNode {
 	return t
 }
 
+func (t *treeNode) Del(x *treeNode) *treeNode {
+	//case1...no child
+	if x.Left == nil && x.Right == nil {
+		curr := x.Parent
+		//at curr left or right?
+		if curr.Val < x.Val {
+			//right
+			curr.Right = nil
+		} else {
+			curr.Left = nil
+		}
+		return t
+	}
+	//case2...one child only
+	if x.Left != nil || x.Right != nil { //上面的if已經排除都nil的情況
+		if x.Left == nil {
+			//子節點right
+			curr := x.Parent
+			if curr.Val > x.Val {
+				//在parent的左邊
+				curr.Left = x.Right
+			} else {
+				curr.Right = x.Right
+			}
+		} else {
+			curr := x.Parent
+			if curr.Val > x.Val {
+				//curr.left
+				curr.Left = x.Left
+			} else {
+				curr.Left = x.Left
+			}
+		}
+		return t
+	}
+	//case...two children
+	{
+		//predecesson
+		temp, _ := t.Predecessor(x)
+		curr := x.Parent
+		if temp.Val > curr.Val {
+			//curr.Right
+			//處理temp原先的關係
+			{
+				temp_parent := temp.Parent
+				temp_child := temp.Left //一定只有left，如果.right != nil 就找錯predecessor
+				temp_parent.Left = temp_child
+				temp_child.Parent = temp_parent
+			}
+			//temp調整位置後的關係
+			{
+				curr.Right = temp
+				temp.Parent = curr
+				temp.Right = x.Right
+				child := x.Right
+				child.Parent = temp
+			}
+		} else {
+			//curr.left
+			{
+				temp_parent := temp.Parent
+				temp_child := temp.Left //一定只有left，如果.right != nil 就找錯predecessor
+				temp_parent.Left = temp_child
+				temp_child.Parent = temp_parent
+			}
+			//temp調整位置後的關係
+			{
+				curr.Left = temp
+				temp.Parent = curr
+				temp.Left = x.Left
+				child := x.Left
+				child.Parent = temp
+			}
+		}
+	}
+	return t
+}
+
 func (t *treeNode) Search(x *treeNode) *treeNode {
 	if t == nil {
 		fmt.Println("node in not exists: ", x)
