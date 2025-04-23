@@ -62,44 +62,83 @@ func (t *treeNode) Del(x *treeNode) *treeNode {
 		}
 		return t
 	}
-	//case...two children
+	//case3...two children
+	//有很多情況要處理 修正版
 	{
-		//predecesson
-		temp, _ := t.Predecessor(x)
+		//先不處理root
+		if x == t {
+			return t
+		}
+		//case3-1 delete leaf
+		if x.Left == nil && x.Right == nil {
+			curr := x.Parent
+			if curr.Left == x {
+				curr.Left = nil
+				x.Parent = nil
+				return t
+			} else if curr.Right == x {
+				curr.Right = nil
+				x.Parent = nil //x才會被GC
+				return t
+			}
+		}
+		//case3-2 one child only
+		if x.Left == nil && x.Right != nil {
+			//x == paretn.Right
+			curr := x.Parent
+			// curr.where = x.here  (right)
+			if curr.Left == x {
+				curr.Left = x.Right
+				x.Right.Parent = curr
+			} else if curr.Right == x {
+				curr.Right = x.Right
+				x.Right.Parent = curr
+			}
+			return t
+		} else if x.Left != nil && x.Right == nil {
+			curr := x.Parent
+			if curr.Left == x {
+				curr.Left = x.Left
+				x.Left.Parent = curr
+			} else if curr.Right == x {
+				curr.Right = x.Left
+				x.Left.Parent = curr
+			}
+			return t
+		}
+		//case3-2 2 children
 		curr := x.Parent
-		if temp.Val > curr.Val {
-			//curr.Right
-			//處理temp原先的關係
-			{
-				temp_parent := temp.Parent
-				temp_child := temp.Left //一定只有left，如果.right != nil 就找錯predecessor
-				temp_parent.Left = temp_child
-				temp_child.Parent = temp_parent
-			}
-			//temp調整位置後的關係
-			{
-				curr.Right = temp
-				temp.Parent = curr
-				temp.Right = x.Right
-				child := x.Right
-				child.Parent = temp
-			}
-		} else {
-			//curr.left
-			{
-				temp_parent := temp.Parent
-				temp_child := temp.Left //一定只有left，如果.right != nil 就找錯predecessor
-				temp_parent.Left = temp_child
-				temp_child.Parent = temp_parent
-			}
-			//temp調整位置後的關係
-			{
-				curr.Left = temp
-				temp.Parent = curr
-				temp.Left = x.Left
-				child := x.Left
-				child.Parent = temp
-			}
+		//先決定which node (pre)取代x
+		//pre方案用 FindMax(x.Left)處理
+		pre, _ := t.FindMax(x.Left)
+		//再維護node的屬性
+		//x提供了 parent left right的指針先保留 用完再指向nil 觸發GC
+		//pre替代x原先的位置 要繼承x的parent left right
+		//pre原先位置的關係也要處理
+		//1...pre是個leaf
+		if pre.Left == nil && pre.Right == nil {
+			pre_parent := pre.Parent
+			pre_parent.Right = nil
+			pre.Parent = curr
+			pre.Left = x.Left
+			pre.Right = x.Right
+			x.Parent, x.Right, x.Left = nil, nil, nil //GC
+			return t
+		}
+
+		//2...pre has a child (pre.Left)
+		//pre = FindMax(x.Left) ===> pre.Right == nil
+		if pre.Left != nil {
+			pre_parent := pre.Parent
+			pre_child := pre.Left
+			pre_parent.Right = pre_child
+			pre_child.Parent = pre_parent
+			curr := x.Parent
+			pre.Parent = curr
+			pre.Left = x.Left
+			pre.Right = x.Right
+			x.Parent, x.Right, x.Left = nil, nil, nil //GC
+			return t
 		}
 	}
 	return t
