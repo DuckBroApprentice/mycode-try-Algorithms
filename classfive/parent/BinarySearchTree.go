@@ -28,6 +28,43 @@ func (t *treeNode) Insert(val int) *treeNode {
 }
 
 func (t *treeNode) Del(x *treeNode) *treeNode {
+	//case root
+	if x == t {
+		if x.Left == nil && x.Right == nil {
+			return nil
+		}
+		if x.Left == nil && x.Right != nil {
+			t = t.Right
+			t.Parent = nil
+			return t
+		} else if x.Left != nil && x.Right == nil {
+			t = t.Left
+			t.Parent = nil
+			return t
+		}
+		if x.Left != nil && x.Right != nil {
+			pre, _ := t.FindMax(x.Left)
+			if pre == x.Left {
+				pre.Right = x.Right
+				x.Right.Parent = pre
+				pre.Parent = nil
+				x = nil
+				return t
+			}
+			if pre.Left != nil {
+				pre_parent := pre.Parent
+				pre_child := pre.Left
+				pre_parent.Right = pre_child
+				pre_child.Parent = pre_parent
+			}
+			pre.Left = x.Left
+			x.Left.Parent = pre
+			pre.Right = x.Right
+			x.Right.Parent = pre
+			x = nil
+			return t
+		}
+	}
 	//case1...no child
 	if x.Left == nil && x.Right == nil {
 		curr := x.Parent
@@ -65,10 +102,6 @@ func (t *treeNode) Del(x *treeNode) *treeNode {
 	//case3...two children
 	//有很多情況要處理 修正版
 	{
-		//先不處理root
-		if x == t {
-			return t
-		}
 		//case3-1 delete leaf
 		if x.Left == nil && x.Right == nil {
 			curr := x.Parent
