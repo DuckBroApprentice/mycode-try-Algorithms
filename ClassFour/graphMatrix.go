@@ -30,7 +30,8 @@ func (g *graph) AddEdge(start, to int) {
 	fmt.Printf("wrong input start >= 0 : %t ; to >= 0 : %t ; start < nodeNum : %t ; to < nodeNum : %t ", start >= 0, to >= 0, start < g.nodeNum, to < g.nodeNum)
 }
 
-//start != to 不能指著自己
+//start != to 不能指著自己  ====> wrong
+//更新知識  其實也可以指到自己
 //  0  1 2 3 4 5
 //0    t             //0指向1
 //1
