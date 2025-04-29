@@ -101,8 +101,10 @@ func (at *AVLTreeNode) Insert(newNode *AVLTreeNode) *AVLTreeNode {
 	}
 	if newNode.Val < at.Val {
 		at.Left = at.Left.Insert(newNode)
+		newNode.Parent = at
 	} else if newNode.Val > at.Val {
 		at.Right = at.Right.Insert(newNode)
+		newNode.Parent = at
 	} else {
 		at = newNode
 	}
